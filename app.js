@@ -5,9 +5,16 @@ const BASE_URL = `https://api.openweathermap.org/data/2.5`;
 const searchInput = document.querySelector("input")
 const searchButton = document.querySelector("button")
 const weatherContainer = document.getElementById("weather")
+const locationIcon = document.getElementById("location")
 
 const getCurrentWeatherByName = async (city) => {
    const url = `${BASE_URL}/weather?q=${city}&units=metric&appid=${API_KEY}`;
+   const res = await fetch(url);
+   const json = await res.json();
+   return json;
+}
+const getCurrentWeatherByCoordinates = async (lat,lon) => {
+   const url = `${BASE_URL}/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`;
    const res = await fetch(url);
    const json = await res.json();
    return json;
@@ -38,8 +45,24 @@ const searchHandler = async () => {
    const currentData = await getCurrentWeatherByName(cityName);
    renderCurrentWeather(currentData);
 }
+//search by location
+const positionCallback =async (position) => {
+  const { latitude, longitude }=position.coords;
+  const currentData=await getCurrentWeatherByCoordinates(latitude,longitude);
+  renderCurrentWeather(currentData);
+}
+const errorCallback = error => {
+   console.log(error.message);
+}
+const locationHandler = () => {
+   if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(positionCallback, errorCallback)
+   } else {
+      alert("Your browser does not support geolocaion!")
+   }
+}
 searchButton.addEventListener("click", searchHandler);
-
+locationIcon.addEventListener("click", locationHandler)
 
 
 
