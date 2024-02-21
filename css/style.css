@@ -21,7 +21,7 @@ body {
    display: flex;
    justify-content: center;
    align-items: center;
-   padding: 100px 0 150px;
+   padding: 50px 0 120px;
    border-radius: 0 0 40px 40px;
    background: linear-gradient(13deg,
          var(--color-primary) 47px,
@@ -76,7 +76,7 @@ body {
    width: 500px;
    min-height: 200px;
    margin: auto;
-   margin-bottom: 50px;
+   margin-bottom: 10px;
    position: relative;
    bottom: 80px;
    padding: 30px;
@@ -84,58 +84,99 @@ body {
    box-shadow: var(--color-secondary) 0 25px 80px -25px;
 }
 
-#weather h1{
+#weather h1 {
    color: var(--color-primary);
    font-size: 2rem;
    margin-bottom: 20px;
 }
 
-#weather #main{
+#weather #main {
    display: flex;
    justify-content: center;
    align-items: center;
    margin-bottom: 20px;
 }
-#weather #main span{
+
+#weather #main span {
    margin: 0 30px 0 10px;
    color: grey;
 }
 
-#weather #info{
+#weather #info {
    width: 100%;
    display: flex;
    justify-content: space-evenly;
    align-items: center;
 }
-#weather #info span{
+
+#weather #info span {
    color: var(--color-secondary);
    margin-left: 5px;
 }
 
+#forecast {
+   display: flex;
+   justify-content: space-between;
+}
+
+#forecast div {
+   width: 150px;
+   padding: 10px 10px 20px;
+   text-align: center;
+   border-radius: 20px;
+   box-shadow: var(--color-secondary) 0px 10px 70px -16px;
+}
+
+#forecast h3 {
+   color: var(--color-primary);
+   margin-bottom: 30px;
+}
+
+#forecast p {
+   margin-bottom: 10px;
+}
+
+#forecast span {
+   color: var(--color-secondary);
+}
 
 @media (max-width:600px) {
    #search {
       padding: 80px 20px 100px;
       border-radius: 0 0 40px 40px;
    }
-   #weather{
-   width: 300px;
-   min-height: 200px;
-   bottom: 50px;
-   border-radius: 20px;
+
+   #weather {
+      width: 300px;
+      min-height: 200px;
+      bottom: 50px;
+      border-radius: 20px;
    }
-   #weather h1{
+
+   #weather h1 {
       font-size: 1.8rem;
       margin-bottom: 10px;
    }
-   #weather #main{
+
+   #weather #main {
       margin-bottom: 10px;
    }
-   #weather #info{
+
+   #weather #info {
       display: flex;
       flex-direction: column;
    }
-   #info p{
+
+   #info p {
       margin: 5px auto;
+   }
+
+   #forecast {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+   }
+
+   #forecast div {
+      margin: 0 auto 20px;
    }
 }
