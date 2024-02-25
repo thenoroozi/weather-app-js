@@ -1,5 +1,5 @@
-const API_KEY = "4fc458e2f6e652547957c5b1775aca32";
-const BASE_URL = `https://api.openweathermap.org/data/2.5`;
+import getWeatherData from "./utils/httpReq.js";
+
 const DAYS = [
    "Sunday",
    "Monday",
@@ -16,30 +16,7 @@ const weatherContainer = document.getElementById("weather")
 const forecastContainer = document.getElementById("forecast")
 const locationIcon = document.getElementById("location")
 
-const getCurrentWeatherByName = async (city) => {
-   const url = `${BASE_URL}/weather?q=${city}&units=metric&appid=${API_KEY}`;
-   const res = await fetch(url);
-   const json = await res.json();
-   return json;
-}
-const getForecastWeatherByName = async (city) => {
-   const url = `${BASE_URL}/forecast?q=${city}&units=metric&appid=${API_KEY}`;
-   const res = await fetch(url);
-   const json = await res.json();
-   return json;
-}
-const getCurrentWeatherByCoordinates = async (lat, lon) => {
-   const url = `${BASE_URL}/weather?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`;
-   const res = await fetch(url);
-   const json = await res.json();
-   return json;
-}
-const getForecastWeatherByCoordinates = async (lat, lon) => {
-   const url = `${BASE_URL}/forecast?lat=${lat}&lon=${lon}&units=metric&appid=${API_KEY}`;
-   const res = await fetch(url);
-   const json = await res.json();
-   return json;
-}
+
 
 const renderCurrentWeather = data => {
    const weatherJSX = `
@@ -83,17 +60,16 @@ const searchHandler = async () => {
    if (!cityName) {
       alert("Please enter city name!")
    }
-   const currentData = await getCurrentWeatherByName(cityName);
+   const currentData = await getWeatherData("current",cityName);
    renderCurrentWeather(currentData);
-   const forecastData = await getForecastWeatherByName(cityName)
+   const forecastData = await getWeatherData("forecast",cityName)
    renderForecastWeather(forecastData);
 }
 //search by location
 const positionCallback = async (position) => {
-   const { latitude, longitude } = position.coords;
-   const currentData = await getCurrentWeatherByCoordinates(latitude, longitude);
+   const currentData = await getWeatherData("current",position.coords);
    renderCurrentWeather(currentData);
-   const forecastData= await getForecastWeatherByCoordinates(latitude,longitude);
+   const forecastData= await getWeatherData("forecast",position.coords);
    renderForecastWeather(forecastData);
 }
 const errorCallback = error => {
