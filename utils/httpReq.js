@@ -1,3 +1,5 @@
+import { showModal } from "./modal.js";
+
 const API_KEY = "4fc458e2f6e652547957c5b1775aca32";
 const BASE_URL = `https://api.openweathermap.org/data/2.5`;
 
@@ -33,10 +35,10 @@ const getWeatherData = async (type, data) => {
       if(+json.cod===200){
          return json;
       }else{
-         alert(json.message)
+         showModal(json.message)
       }
    } catch (error) {
-    alert("connection lost!")
+    showModal("connection lost!")
    }
 }
 export default getWeatherData;
