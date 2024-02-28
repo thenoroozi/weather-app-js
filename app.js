@@ -1,15 +1,6 @@
 import getWeatherData from "./utils/httpReq.js";
-import {showModal,removeModal} from "./utils/modal.js";
-
-const DAYS = [
-   "Sunday",
-   "Monday",
-   "Tuesday",
-   "Wednesday",
-   "Thursday",
-   "Friday",
-   "Saturday"
-];
+import { showModal, removeModal } from "./utils/modal.js";
+import { getWeekDay } from "./utils/customDate.js";
 
 const searchInput = document.querySelector("input")
 const searchButton = document.querySelector("button")
@@ -19,11 +10,9 @@ const locationIcon = document.getElementById("location")
 const modalButton = document.getElementById("modal-button")
 
 
-
 const renderCurrentWeather = data => {
-   if (!data) {
-      return;
-   }
+   const loaderJSX=` <span id="loader"></span>`;
+
    const weatherJSX = `
       <h1>${data.name},${data.sys.country}</h1>
       <div id="main">
@@ -36,11 +25,9 @@ const renderCurrentWeather = data => {
       <p>Wind Speed: <span>${data.wind.speed} m/s</span></p>
       </div>
    `;
-   weatherContainer.innerHTML = weatherJSX;
+   weatherContainer.innerHTML = data ? weatherJSX : loaderJSX;
 }
-const getWeekDay = (date) => {
-   return DAYS[new Date(date * 1000).getDay()];
-}
+
 const renderForecastWeather = (data) => {
    if (!data) {
       return;
@@ -69,16 +56,16 @@ const searchHandler = async () => {
       showModal("Please enter city name!");
       return;
    }
-   const currentData = await getWeatherData("current",cityName);
+   const currentData = await getWeatherData("current", cityName);
    renderCurrentWeather(currentData);
-   const forecastData = await getWeatherData("forecast",cityName)
+   const forecastData = await getWeatherData("forecast", cityName)
    renderForecastWeather(forecastData);
 }
 //search by location
 const positionCallback = async (position) => {
-   const currentData = await getWeatherData("current",position.coords);
+   const currentData = await getWeatherData("current", position.coords);
    renderCurrentWeather(currentData);
-   const forecastData= await getWeatherData("forecast",position.coords);
+   const forecastData = await getWeatherData("forecast", position.coords);
    renderForecastWeather(forecastData);
 }
 const errorCallback = error => {
@@ -91,11 +78,17 @@ const locationHandler = () => {
       showModal("Your browser does not support geolocaion!")
    }
 }
+
+const initHandler = async () => {
+   const currentData = await getWeatherData("current", "isfahan");
+   renderCurrentWeather(currentData);
+   const forecastData = await getWeatherData("forecast", "isfahan")
+   renderForecastWeather(forecastData);
+}
 searchButton.addEventListener("click", searchHandler);
 locationIcon.addEventListener("click", locationHandler);
 modalButton.addEventListener("click", removeModal);
-
-
+window.addEventListener("load",initHandler)
 
 
 
